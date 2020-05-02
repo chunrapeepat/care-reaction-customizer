@@ -138,18 +138,19 @@ function download() {
     download.setAttribute("href", image);
 
     // upload file to firebase storage
-    // @ts-ignore
-    canvas.toBlob(function(blob){
-        var image = new Image();
-        image.src = blob;
+    if (uploadedImage) {
+        canvas.toBlob(function(blob){
+            var image = new Image();
+            image.src = blob;
 
-        const today = new Date();
-        const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        const dateTime = date+'--'+time+'--'+today.getTime();
+            const today = new Date();
+            const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            const dateTime = date+'--'+time+'--'+today.getTime();
 
-        firebase.storage().ref().child(`images/${dateTime}.png`).put(blob);
-    });
+            firebase.storage().ref().child(`images/${dateTime}.png`).put(blob);
+        });
+    }
 }
 // @ts-ignore
 window.download = download;
