@@ -190,9 +190,9 @@ async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
     if (fn) await fn();
     await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90, 0);
 
-    ctx.fillStyle = "#ddd";
-    ctx.font = "35px Arial";
-    ctx.fillText("https://care-reaction-customizer.thechun.dev", 30, 50);
+    // ctx.fillStyle = "#ddd";
+    // ctx.font = "35px Arial";
+    // ctx.fillText("https://care-reaction-customizer.thechun.dev", 30, 50);
 };
 
 // init parameters
