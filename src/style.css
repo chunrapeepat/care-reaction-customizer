@@ -1,5 +1,21 @@
-.main {
-    width: 500px;
-    height: 500px;
-    background: #ddd;
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    width: 1100px;
+    margin: auto auto;
+}
+.grid {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 400px 1fr;
+}
+canvas {
+    width: 400px;
+    height: 400px;
 }

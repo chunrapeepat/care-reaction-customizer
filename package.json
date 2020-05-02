@@ -34,5 +34,8 @@
     "gh-pages": "^1.2.0",
     "parcel-bundler": "^1.9.7",
     "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "@svgr/parcel-plugin-svgr": "^5.4.0"
   }
 }
