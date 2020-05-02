@@ -8,17 +8,21 @@ if (!ctx) {
     throw new Error("Canvas context can't be null");
 }
 
-function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number) {
+async function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number) {
     if (!ctx) return;
     const img = new Image();
-    img.onload = function() {
-        ctx.drawImage(img, canvas.width / 2 - width / 2 + offsetX, canvas.width / 2 - height / 2 + offsetY, width, height);
-    };
     img.src = imageSrc;
-}
+    img.onload = function() {
+        return ctx.drawImage(img, canvas.width / 2 - width / 2 + offsetX, canvas.width / 2 - height / 2 + offsetY, width, height);
+    };
+};
 
-renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0);
-renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90);
+async function render(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "#fafafa";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-ctx.fillStyle = "#fafafa";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0);
+    await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90);
+};
+
+render(ctx);
