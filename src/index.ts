@@ -14,6 +14,7 @@ let uploadedHeight: number | undefined = undefined;
 let offsetX = 0;
 let offsetY = 0;
 let degree = 0;
+let scale = 1;
 
 // event handlers
 const uploader = document.getElementById('uploader');
@@ -62,7 +63,7 @@ function handleRangeX(e: any) {
     render(ctx,  () => {
         return new Promise(async (resolve, reject) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
         });
     });
@@ -82,7 +83,7 @@ function handleRangeY(e: any) {
     render(ctx,  () => {
         return new Promise(async (resolve, reject) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
         });
     });
@@ -102,7 +103,27 @@ function handleRotate(e: any) {
     render(ctx,  () => {
         return new Promise(async (resolve, reject) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            resolve();
+        });
+    });
+}
+
+const scalePanel = document.getElementById('scale');
+if (!scalePanel) {
+    throw new Error("Scale can't be null");
+}
+scalePanel.addEventListener('change', handleScale, false);
+function handleScale(e: any) {
+    if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
+    if (!ctx) return;
+
+    scale = +e.target.value;
+
+    render(ctx,  () => {
+        return new Promise(async (resolve, reject) => {
+            if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
         });
     });
