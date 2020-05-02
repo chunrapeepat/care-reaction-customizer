@@ -130,14 +130,15 @@ function handleScale(e: any) {
 }
 
 // canvas functions
+const memo: {[key: string]: HTMLImageElement} = {};
 function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number, degree: number) {
     return new Promise((resolve, reject) => {
         if (!ctx) {
             reject();
             return;
         }
-        const img = new Image();
-        img.onload = function() {
+        if (memo[imageSrc]) {
+            const img = memo[imageSrc];
             ctx.save();
             if (degree !== 0) {
                 ctx.translate(width/2 + offsetX, height/2 - offsetY);
@@ -148,8 +149,23 @@ function renderImage(imageSrc: string, width: number, height: number, offsetX: n
             }
             ctx.restore();
             resolve(img);
-        };
-        img.src = imageSrc;
+        } else {
+            const img = new Image();
+            img.onload = function() {
+                ctx.save();
+                if (degree !== 0) {
+                    ctx.translate(width/2 + offsetX, height/2 - offsetY);
+                    ctx.rotate(degree * Math.PI / 360);
+                    ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
+                } else {
+                    ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
+                }
+                ctx.restore();
+                memo[imageSrc] = img;
+                resolve(img);
+            };
+            img.src = imageSrc;
+        }
     });
 };
 
