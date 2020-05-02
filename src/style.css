@@ -6,6 +6,10 @@ body {
     box-sizing: border-box;
 }
 
+.heading {
+    margin: 50px 0;
+}
+
 .container {
     width: 1100px;
     margin: auto auto;
@@ -19,6 +23,28 @@ canvas {
     width: 400px;
     height: 400px;
     border: 1px solid #ccc;
+}
+@media only screen and (max-width: 1100px) {
+    .container {
+        width: calc(100% - 30px);
+        margin: 0 15px;
+    }
+    .grid {
+        grid-template-columns: 300px 1fr;
+    }
+    canvas {
+        width: 300px;
+        height: 300px;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    canvas {
+        width: calc(100vw - 30px);
+        height: calc(100vw - 30px);
+    }
 }
 
 .group {
