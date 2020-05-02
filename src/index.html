@@ -16,15 +16,34 @@
 					<canvas width="1024" height="1024" id="renderer"></canvas>
 				</div>
 				<div>
-					<input type="file" id="uploader" accept="image/*">
-					<br>
-					<input id="range-x" type="range" min="-1024" max="1024" step="1" value="0">
-					<br>
-					<input id="range-y" type="range" min="-1024" max="1024" step="1" value="0">
-					<br>
-					<input id="rotate" type="range" min="0" max="360" step="1" value="0">
-					<br>
-					<input id="scale" type="range" min="0" max="3" step="0.01" value="1">
+					<div class="group">
+						<label>Upload Your Image:</label>
+						<div class="upload-btn-wrapper">
+							<button class="btn">Click here to upload your image</button>
+							<input type="file" id="uploader" accept="image/*">
+						</div>
+					</div>
+					<div class="group">
+						<label>X Offset:</label>
+						<input class="slider" id="range-x" type="range" min="-1024" max="1024" step="1" value="0">
+					</div>
+					<div class="group">
+						<label>Y Offset:</label>
+						<input class="slider" id="range-y" type="range" min="-1024" max="1024" step="1" value="0">
+					</div>
+					<div class="group">
+						<label>Rotate Angle:</label>
+						<input class="slider" id="rotate" type="range" min="-360" max="360" step="1" value="0">
+					</div>
+					<div class="group">
+						<label>Scale:</label>
+						<input class="slider" id="scale" type="range" min="0" max="2" step="0.01" value="1">
+					</div>
+					<a download="care-reaction.png" id="download">
+						<Button class="button" onclick="download()">
+							Download Your Image
+						</Button>
+					</a>
 				</div>
 			</div>
 		</div>

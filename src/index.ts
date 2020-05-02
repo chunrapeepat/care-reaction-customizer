@@ -53,7 +53,7 @@ const sliderX = document.getElementById('range-x');
 if (!sliderX) {
     throw new Error("Slider X can't be null");
 }
-sliderX.addEventListener('change', handleRangeX, false);
+sliderX.addEventListener('input', handleRangeX, false);
 function handleRangeX(e: any) {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
@@ -73,7 +73,7 @@ const sliderY = document.getElementById('range-y');
 if (!sliderY) {
     throw new Error("Slider Y can't be null");
 }
-sliderY.addEventListener('change', handleRangeY, false);
+sliderY.addEventListener('input', handleRangeY, false);
 function handleRangeY(e: any) {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
@@ -93,7 +93,7 @@ const rotate = document.getElementById('rotate');
 if (!rotate) {
     throw new Error("Rotate can't be null");
 }
-rotate.addEventListener('change', handleRotate, false);
+rotate.addEventListener('input', handleRotate, false);
 function handleRotate(e: any) {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
@@ -113,7 +113,7 @@ const scalePanel = document.getElementById('scale');
 if (!scalePanel) {
     throw new Error("Scale can't be null");
 }
-scalePanel.addEventListener('change', handleScale, false);
+scalePanel.addEventListener('input', handleScale, false);
 function handleScale(e: any) {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
@@ -130,6 +130,17 @@ function handleScale(e: any) {
 }
 
 // canvas functions
+function download() {
+    const download = document.getElementById("download");
+    const image = canvas.toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+    console.log("THSIO")
+    if (!download) return;
+    download.setAttribute("href", image);
+}
+// @ts-ignore
+window.download = download;
+
 const memo: {[key: string]: HTMLImageElement} = {};
 function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number, degree: number) {
     return new Promise((resolve, reject) => {
@@ -178,6 +189,10 @@ async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
     await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0, 0);
     if (fn) await fn();
     await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90, 0);
+
+    ctx.fillStyle = "#ddd";
+    ctx.font = "35px Arial";
+    ctx.fillText("https://care-reaction-customizer.thechun.dev", 30, 50);
 };
 
 // init parameters
