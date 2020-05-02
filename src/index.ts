@@ -13,6 +13,7 @@ let uploadedWidth: number | undefined = undefined;
 let uploadedHeight: number | undefined = undefined;
 let offsetX = 0;
 let offsetY = 0;
+let degree = 0;
 
 // event handlers
 const uploader = document.getElementById('uploader');
@@ -34,7 +35,7 @@ function handleUpload(e: any) {
                 }
                 img.onload = async function() {
                     if (!event.target) return;
-                    await renderImage(event.target.result, img.width / 2, img.height / 2, 0, 0);
+                    await renderImage(event.target.result, img.width / 2, img.height / 2, 0, 0, 0);
                     uploadedImage = event.target.result;
                     uploadedWidth = img.width / 2;
                     uploadedHeight = img.height / 2;
@@ -61,7 +62,7 @@ function handleRangeX(e: any) {
     render(ctx,  () => {
         return new Promise(async (resolve, reject) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY);
+            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY, degree);
             resolve();
         });
     });
@@ -81,14 +82,34 @@ function handleRangeY(e: any) {
     render(ctx,  () => {
         return new Promise(async (resolve, reject) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY);
+            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY, degree);
+            resolve();
+        });
+    });
+}
+
+const rotate = document.getElementById('rotate');
+if (!rotate) {
+    throw new Error("Rotate can't be null");
+}
+rotate.addEventListener('change', handleRotate, false);
+function handleRotate(e: any) {
+    if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
+    if (!ctx) return;
+
+    degree = +e.target.value;
+
+    render(ctx,  () => {
+        return new Promise(async (resolve, reject) => {
+            if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
+            await renderImage(uploadedImage, uploadedWidth, uploadedHeight, offsetX, offsetY, degree);
             resolve();
         });
     });
 }
 
 // canvas functions
-function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number) {
+function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number, degree: number) {
     return new Promise((resolve, reject) => {
         if (!ctx) {
             reject();
@@ -96,7 +117,15 @@ function renderImage(imageSrc: string, width: number, height: number, offsetX: n
         }
         const img = new Image();
         img.onload = function() {
-            ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
+            ctx.save();
+            if (degree !== 0) {
+                ctx.translate(width/2 + offsetX, height/2 - offsetY);
+                ctx.rotate(degree * Math.PI / 360);
+                ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
+            } else {
+                ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
+            }
+            ctx.restore();
             resolve(img);
         };
         img.src = imageSrc;
@@ -109,11 +138,9 @@ async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
     ctx.fillStyle = "#fafafa";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0);
-
+    await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0, 0);
     if (fn) await fn();
-
-    await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90);
+    await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90, 0);
 };
 
 // init parameters
