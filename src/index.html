@@ -4,7 +4,8 @@
 		<meta charset="UTF-8">
 		<title>Care Reaction Customizer - Chun Rapeepat (The CHUN)</title>
 		<link rel="stylesheet" href="./style.css"/>
-		<!-- TODO: Add favicon -->
+		<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
+		<link rel="icon" type="image/x-icon" href="./favicon.ico"/>
 		<!-- TODO: Meta tag Title, Description, Author, Og:image -->
 		<!-- TODO: Add Google Analytics -->
 	</head>
@@ -24,20 +25,20 @@
 						</div>
 					</div>
 					<div class="group">
-						<label>X Offset:</label>
-						<input class="slider" id="range-x" type="range" min="-1024" max="1024" step="1" value="0">
-					</div>
-					<div class="group">
-						<label>Y Offset:</label>
-						<input class="slider" id="range-y" type="range" min="-1024" max="1024" step="1" value="0">
-					</div>
-					<div class="group">
 						<label>Rotate Angle:</label>
 						<input class="slider" id="rotate" type="range" min="-360" max="360" step="1" value="0">
 					</div>
 					<div class="group">
 						<label>Scale:</label>
 						<input class="slider" id="scale" type="range" min="0" max="2" step="0.01" value="1">
+					</div>
+					<div class="group">
+						<label>X Offset:</label>
+						<input class="slider" id="range-x" type="range" min="-1024" max="1024" step="1" value="0">
+					</div>
+					<div class="group">
+						<label>Y Offset:</label>
+						<input class="slider" id="range-y" type="range" min="-1024" max="1024" step="1" value="0">
 					</div>
 					<a download="care-reaction.png" id="download">
 						<Button class="button" onclick="download()">
