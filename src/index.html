@@ -78,6 +78,26 @@
 				<a href="https://www.instagram.com/chunza2542/">Instagram</a>
 			</div>
 		</div>
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-storage.js"></script>
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyByi2LZqkwghKAr4ur1S7jdl5NQtJ41Cf8",
+            authDomain: "care-reaction-customizer.firebaseapp.com",
+            databaseURL: "https://care-reaction-customizer.firebaseio.com",
+            projectId: "care-reaction-customizer",
+            storageBucket: "care-reaction-customizer.appspot.com",
+            messagingSenderId: "262595943527",
+            appId: "1:262595943527:web:3c74ec83b591e7b80188c2",
+            measurementId: "G-S1ZZ9CVLWE"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+        </script>
 		<script src="./index.ts"></script>
 	</body>
 </html>

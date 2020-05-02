@@ -134,9 +134,22 @@ function download() {
     const download = document.getElementById("download");
     const image = canvas.toDataURL("image/png")
         .replace("image/png", "image/octet-stream");
-    console.log("THSIO")
     if (!download) return;
     download.setAttribute("href", image);
+
+    // upload file to firebase storage
+    // @ts-ignore
+    canvas.toBlob(function(blob){
+        var image = new Image();
+        image.src = blob;
+
+        const today = new Date();
+        const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const dateTime = date+'--'+time+'--'+today.getTime();
+
+        firebase.storage().ref().child(`images/${dateTime}.png`).put(blob);
+    });
 }
 // @ts-ignore
 window.download = download;
