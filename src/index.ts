@@ -166,7 +166,7 @@ function renderImage(imageSrc: string, width: number, height: number, offsetX: n
             const img = memo[imageSrc];
             ctx.save();
             if (degree !== 0) {
-                ctx.translate(width/2 + offsetX, height/2 - offsetY);
+                ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
                 ctx.rotate(degree * Math.PI / 360);
                 ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
             } else {
