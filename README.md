@@ -1,46 +1,22 @@
-# parcel-typescript-example
+# care-reaction-customizer
 
-A minimum TypeScript app with [Parcel Bundler](https://parceljs.org/).
+Custom your own version of Facebook care-reaction emoji
 
-## Source code
-
-- [index.html](./src/index.html)
-- [index.ts](./src/index.ts)
-- [style.css](./src/style.css)
-
-For more details, see [src/](./src/).
-
-## Usage
-
-### Installation
+### :electric_plug: Installation
 
     yarn install
 
-### Development
-
-Launch development server.
-
-    yarn start
-    
-### Build
+### :hammer: Build
 
 Compile TypeScript app and copy index.html to the `dist` folder.
 
     yarn run build
 
-### Deploy
-
-Deploy `dist` folder to GitHub Pages.
-
-    yarn run deploy
-
-You can see the result in <https://azu.github.io/parcel-typescript-example/>.
-
-## Contributing
+## :basketball: Contributing
 
 Pull requests and stars are always welcome.
 
-For bugs and feature requests, [please create an issue](https://github.com/azu/parcel-typescript-example/issues).
+For bugs and feature requests, [please create an issue](https://github.com/chunza2542/care-reaction-customizer/issues).
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -48,11 +24,14 @@ For bugs and feature requests, [please create an issue](https://github.com/azu/p
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
+Feel free to add your profile in contributor list section (index.html).
+
 ## Author
 
-- [github/azu](https://github.com/azu)
-- [twitter/azu_re](https://twitter.com/azu_re)
+- [github/chunza2542](https://github.com/chunza2542)
+- [twitter/chunza2542](https://twitter.com/chunza2542)
 
-## License
+---
 
-MIT © azu
+Make with :heart: by Chun Rapeepat
+
