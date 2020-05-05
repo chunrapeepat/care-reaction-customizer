@@ -150,17 +150,39 @@ canvas {
     background: #424242;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
+.button-light {
+    color: #333;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+    display: inline-block;
+}
 
-.comment {
+.small-container {
     width: 800px;
     margin: 50px auto;
     margin-top: 80px;
 }
 @media only screen and (max-width: 830px) {
-    .comment {
+    .small-container {
         width: calc(100% - 30px);
         margin: 50px 15px;
     }
+}
+
+.contributor {
+    display: flex;
+    margin: 15px 0;
+}
+.contributor > div:nth-child(1) {
+    font-weight: bold;
+    margin-right: 15px;
+}
+.contributor a {
+    color: #333;
 }
 
 .footer {
