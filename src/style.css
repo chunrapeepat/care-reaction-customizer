@@ -11,10 +11,11 @@ body {
     padding: 15px;
 }
 .header a {
-    color: #777;
+    color: #999;
     font-weight: bold;
     text-decoration: none;
     margin-left: 10px;
+    transition: 0.15s;
 }
 .header a:hover {
     color: #333;
