@@ -91,7 +91,7 @@ handleInput("rotate-input", "input", (e: any) => {
     degree = +e.target.value;
 
     render(ctx,  () => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
             await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
@@ -113,7 +113,6 @@ handleInput("scale-input", "input", (e: any) => {
     });
 });
 
-// canvas functions
 function download() {
     const download = document.getElementById("download");
     const image = canvas.toDataURL("image/png")
@@ -139,6 +138,20 @@ function download() {
 // @ts-ignore
 window.download = download;
 
+function drawImage(img: HTMLImageElement, width: number, height: number, offsetX: number, offsetY: number, degree: number): void {
+    if (!ctx) return;
+
+    ctx.save();
+    if (degree !== 0) {
+        ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
+        ctx.rotate(degree * Math.PI / 360);
+        ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
+    } else {
+        ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
+    }
+    ctx.restore();
+}
+
 const memo: {[key: string]: HTMLImageElement} = {};
 function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number, degree: number) {
     return new Promise((resolve, reject) => {
@@ -147,29 +160,13 @@ function renderImage(imageSrc: string, width: number, height: number, offsetX: n
             return;
         }
         if (memo[imageSrc]) {
-            const img = memo[imageSrc];
-            ctx.save();
-            if (degree !== 0) {
-                ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
-                ctx.rotate(degree * Math.PI / 360);
-                ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
-            } else {
-                ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
-            }
-            ctx.restore();
-            resolve(img);
+            drawImage(memo[imageSrc], width, height, offsetX, offsetY, degree);
+            resolve(memo[imageSrc]);
         } else {
             const img = new Image();
             img.onload = function() {
-                ctx.save();
-                if (degree !== 0) {
-                    ctx.translate(width/2 + offsetX, height/2 - offsetY);
-                    ctx.rotate(degree * Math.PI / 360);
-                    ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
-                } else {
-                    ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
-                }
-                ctx.restore();
+                drawImage(img, width, height, offsetX, offsetY, degree);
+
                 memo[imageSrc] = img;
                 resolve(img);
             };
