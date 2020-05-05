@@ -121,7 +121,8 @@ canvas {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    padding: 8px 20px;
+    padding: 10px 20px;
+    transform: translateY(2px);
     font-size: 1rem;
     outline: 0;
     text-decoration: none;
@@ -131,6 +132,7 @@ canvas {
     border: 0;
 }
 .button:hover {
+    background: #424242;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
@@ -156,11 +158,16 @@ canvas {
     font-weight: bold;
     font-style: italic;
 }
+.footer > a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
 .footer > div {
     margin-top: 10px;
 }
 .footer > div > a {
     color: #777;
     text-decoration: none;
-    margin: 0 7px;
+    margin: 0 3px;
 }
