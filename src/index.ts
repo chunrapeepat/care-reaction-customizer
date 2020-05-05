@@ -145,7 +145,7 @@ function drawImage(img: HTMLImageElement, width: number, height: number, offsetX
     if (degree !== 0) {
         ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
         ctx.rotate(degree * Math.PI / 360);
-        ctx.drawImage(img, -(canvas.width / 2 - width / 2), -(canvas.width / 2 - height / 2), width, height);
+        ctx.drawImage(img, -(width/2), -(height/2), width, height);
     } else {
         ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
     }
