@@ -142,13 +142,9 @@ function drawImage(img: HTMLImageElement, width: number, height: number, offsetX
     if (!ctx) return;
 
     ctx.save();
-    if (degree !== 0) {
-        ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
-        ctx.rotate(degree * Math.PI / 360);
-        ctx.drawImage(img, -(width/2), -(height/2), width, height);
-    } else {
-        ctx.drawImage(img, (canvas.width / 2 - width / 2) + offsetX, (canvas.width / 2 - height / 2) + offsetY, width, height);
-    }
+    ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
+    ctx.rotate(degree * Math.PI / 360);
+    ctx.drawImage(img, -(width/2), -(height/2), width, height);
     ctx.restore();
 }
 
@@ -183,7 +179,7 @@ async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
 
     await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0, 0);
     if (fn) await fn();
-    await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90, 0);
+    await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, -90, 0);
 };
 
 render(ctx, null);
