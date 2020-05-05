@@ -17,12 +17,16 @@ let degree = 0;
 let scale = 1;
 
 // event handlers
-const uploader = document.getElementById('uploader');
-if (!uploader) {
-    throw new Error("Uploader can't be null");
+function handleInput(id: string, eventName: string, handler: (e: any) => void) {
+    const elem = document.getElementById(id);
+    if (!elem) {
+        throw new Error(`${id} must be existed`);
+    }
+    elem.addEventListener(eventName, handler, false);
 }
-uploader.addEventListener('change', handleUpload, false);
-function handleUpload(e: any) {
+
+// register uploader input
+handleInput("uploader", "change", (e: any) => {
     const reader = new FileReader();
     reader.onload = function(event){
         if (!ctx) return;
@@ -47,54 +51,40 @@ function handleUpload(e: any) {
         });
     };
     reader.readAsDataURL(e.target.files[0]);
-}
+});
 
-const sliderX = document.getElementById('range-x');
-if (!sliderX) {
-    throw new Error("Slider X can't be null");
+// handle controller-inputs
+function isUserUploaded() {
+    return uploadedImage && uploadedWidth !== undefined && uploadedHeight !== undefined && ctx;
 }
-sliderX.addEventListener('input', handleRangeX, false);
-function handleRangeX(e: any) {
-    if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-    if (!ctx) return;
+handleInput("x-offset-input", "input", (e: any) => {
+    if (!isUserUploaded()) return;
 
     offsetX = +e.target.value;
 
     render(ctx,  () => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
             await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
         });
     });
-}
-
-const sliderY = document.getElementById('range-y');
-if (!sliderY) {
-    throw new Error("Slider Y can't be null");
-}
-sliderY.addEventListener('input', handleRangeY, false);
-function handleRangeY(e: any) {
+});
+handleInput("y-offset-input", "input", (e: any) => {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
 
     offsetY = +e.target.value;
 
     render(ctx,  () => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
             await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
         });
     });
-}
-
-const rotate = document.getElementById('rotate');
-if (!rotate) {
-    throw new Error("Rotate can't be null");
-}
-rotate.addEventListener('input', handleRotate, false);
-function handleRotate(e: any) {
+});
+handleInput("rotate-input", "input", (e: any) => {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
 
@@ -107,27 +97,21 @@ function handleRotate(e: any) {
             resolve();
         });
     });
-}
-
-const scalePanel = document.getElementById('scale');
-if (!scalePanel) {
-    throw new Error("Scale can't be null");
-}
-scalePanel.addEventListener('input', handleScale, false);
-function handleScale(e: any) {
+});
+handleInput("scale-input", "input", (e: any) => {
     if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
     if (!ctx) return;
 
     scale = +e.target.value;
 
     render(ctx,  () => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
             await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
             resolve();
         });
     });
-}
+});
 
 // canvas functions
 function download() {
@@ -137,7 +121,7 @@ function download() {
     if (!download) return;
     download.setAttribute("href", image);
 
-    // upload file to firebase storage
+    // store file in firebase storage
     if (uploadedImage) {
         canvas.toBlob(function(blob){
             var image = new Image();
@@ -203,11 +187,6 @@ async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
     await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0, 0);
     if (fn) await fn();
     await renderImage(ReactionHandsPNG, 1000/2, 480/2, 0, 90, 0);
-
-    // ctx.fillStyle = "#ddd";
-    // ctx.font = "35px Arial";
-    // ctx.fillText("https://care-reaction-customizer.thechun.dev", 30, 50);
 };
 
-// init parameters
 render(ctx, null);
