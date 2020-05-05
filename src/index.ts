@@ -25,6 +25,19 @@ function handleInput(id: string, eventName: string, handler: (e: any) => void) {
     elem.addEventListener(eventName, handler, false);
 }
 
+const uploader = document.getElementById('uploader');
+if (uploader && (('draggable' in uploader) || ('ondragstart' in uploader && 'ondrop' in uploader)  ) && 'FormData' in window && 'FileReader' in window) {
+    const uploadButton = document.getElementById('upload-button')
+    uploader.addEventListener('dragover', () => {
+        uploadButton && uploadButton.classList.add('dragging');
+    });
+    uploader.addEventListener('dragleave', () => {
+        uploadButton && uploadButton.classList.remove('dragging');
+    });
+    uploader.addEventListener('drop', () => {
+        uploadButton && uploadButton.classList.remove('dragging');
+    });
+}
 // register uploader input
 handleInput("uploader", "change", (e: any) => {
     const reader = new FileReader();

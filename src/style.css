@@ -116,11 +116,15 @@ canvas {
     border: 2px solid gray;
     color: gray;
     background-color: white;
-    padding: 8px 20px;
+    padding: 12px 20px;
     border-radius: 5px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+}
+.btn.dragging {
+    background-color: grey;
+    color: white;
 }
 .upload-btn-wrapper input[type=file] {
     font-size: 100px;
