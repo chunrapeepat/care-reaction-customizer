@@ -107,7 +107,7 @@ canvas {
     cursor: pointer;
 }
 
-.upload-btn-wrapper {
+.upload-btn-wrapper, .flip-btn-wrapper {
     position: relative;
     overflow: hidden;
     display: inline-block;
