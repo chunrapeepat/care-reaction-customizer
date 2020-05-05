@@ -6,6 +6,20 @@ body {
     box-sizing: border-box;
 }
 
+.header {
+    text-align: right;
+    padding: 15px;
+}
+.header a {
+    color: #777;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 10px;
+}
+.header a:hover {
+    color: #333;
+}
+
 .heading {
     margin: 50px 0;
 }
