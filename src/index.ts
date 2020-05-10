@@ -16,6 +16,82 @@ let offsetY = 0;
 let degree = 0;
 let scale = 1;
 
+
+const yOffsetEl = document.getElementById("y-offset-input")! as HTMLInputElement;
+const xOffsetEl = document.getElementById("x-offset-input")! as HTMLInputElement;
+let isCanvasClicked = false
+let startOffsetX = 0
+let startOffsetY = 0
+let originalOffsetX = offsetX
+let originalOffsetY = offsetY
+
+const handleMouseDown = (e: MouseEvent) => {
+    isCanvasClicked = true
+    startOffsetX = e.offsetX
+    startOffsetY = e.offsetY
+    originalOffsetX = offsetX
+    originalOffsetY = offsetY
+}
+const handleMouseMove = (e: MouseEvent) => {
+    if(isCanvasClicked) {
+        render(ctx,  () => {
+            return new Promise(async (resolve, _) => {
+                if(!(uploadedImage && uploadedWidth && uploadedHeight)) return;
+                const diffX = canvas.width * (e.offsetX - startOffsetX) / canvas.clientWidth
+                const diffY = canvas.height * (-1 * (e.offsetY - startOffsetY)) / canvas.clientHeight
+                offsetX = originalOffsetX + diffX
+                offsetY = originalOffsetY + diffY
+                renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+                xOffsetEl.value = offsetX.toString()
+                yOffsetEl.value = offsetY.toString()
+                resolve();
+            });
+        });
+    }
+}
+const handleMouseUp = (e: MouseEvent) => {
+    isCanvasClicked = false
+}
+const handleTouchStart = (e: TouchEvent) => {
+    e.stopPropagation()
+    isCanvasClicked = true
+    startOffsetX = e.touches[0].pageX - (e.touches[0].target as HTMLCanvasElement).offsetLeft;
+    startOffsetY = e.touches[0].pageY - (e.touches[0].target as HTMLCanvasElement).offsetTop;
+    originalOffsetX = offsetX
+    originalOffsetY = offsetY
+}
+const handleTouchMove = (e: TouchEvent) => {
+    if(isCanvasClicked) {
+        e.stopPropagation()
+        render(ctx,  () => {
+            return new Promise(async (resolve, _) => {
+                if(!(uploadedImage && uploadedWidth && uploadedHeight)) return;
+                const eventOffsetX = e.touches[0].pageX - (e.touches[0].target as HTMLCanvasElement).offsetLeft;
+                const eventOffsetY = e.touches[0].pageY - (e.touches[0].target as HTMLCanvasElement).offsetTop;
+                const diffX = canvas.width * (eventOffsetX - startOffsetX) / canvas.clientWidth
+                const diffY = canvas.height * (-1 * (eventOffsetY - startOffsetY)) / canvas.clientHeight
+                offsetX = originalOffsetX + diffX
+                offsetY = originalOffsetY + diffY
+                renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+                xOffsetEl.value = offsetX.toString()
+                yOffsetEl.value = offsetY.toString()
+                resolve();
+            });
+        });
+    }
+}
+const handleTouchEnd = (e: TouchEvent) => {
+    e.stopPropagation()
+    isCanvasClicked = false
+}
+
+canvas.addEventListener('mousedown', handleMouseDown)
+canvas.addEventListener('mousemove', handleMouseMove)
+canvas.addEventListener('mouseup', handleMouseUp)
+canvas.addEventListener('touchstart', handleTouchStart)
+canvas.addEventListener('touchmove', handleTouchMove)
+canvas.addEventListener('touchend', handleTouchEnd)
+
 // event handlers
 function handleInput(id: string, eventName: string, handler: (e: any) => void) {
     const elem = document.getElementById(id);
