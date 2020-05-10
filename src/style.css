@@ -111,7 +111,16 @@ canvas {
 .upload-btn-wrapper, .flip-btn-wrapper {
     position: relative;
     overflow: hidden;
-    display: inline-block;
+    display: block;
+    margin: 10px 0;
+}
+.flip-btn-wrapper > span {
+    font-size: 0.8rem;
+}
+.flip-btn-wrapper > button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
 }
 .btn {
     border: 2px solid gray;
