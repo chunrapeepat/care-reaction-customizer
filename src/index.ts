@@ -15,6 +15,7 @@ let offsetX = 0;
 let offsetY = 0;
 let degree = 0;
 let scale = 1;
+let flip: [number, number] = [ 1, 1 ];
 
 
 const yOffsetEl = document.getElementById("y-offset-input")! as HTMLInputElement;
@@ -154,7 +155,7 @@ handleInput("x-offset-input", "input", (e: any) => {
     render(ctx,  () => {
         return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree, flip);
             resolve();
         });
     });
@@ -168,7 +169,7 @@ handleInput("y-offset-input", "input", (e: any) => {
     render(ctx,  () => {
         return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree, flip);
             resolve();
         });
     });
@@ -182,7 +183,7 @@ handleInput("rotate-input", "input", (e: any) => {
     render(ctx,  () => {
         return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree, flip);
             resolve();
         });
     });
@@ -196,11 +197,31 @@ handleInput("scale-input", "input", (e: any) => {
     render(ctx,  () => {
         return new Promise(async (resolve, _) => {
             if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
-            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree, flip);
             resolve();
         });
     });
 });
+
+function flipImage (flipIndex: number): (e: any) => void {
+    return (e: any) => {
+        if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
+        if (!ctx) return;
+    
+        flip[flipIndex] *= -1;
+        
+        render(ctx, () => {
+            return new Promise(async (resolve, _) => {
+                if (!uploadedImage || !uploadedHeight || !uploadedWidth) return;
+                await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree, flip);
+                resolve();
+            });
+        });        
+    };
+};
+
+handleInput("flip-horizontal-btn", "click", flipImage(0));
+handleInput("flip-vertical-btn",   "click", flipImage(1));
 
 function download() {
     const download = document.getElementById("download");
@@ -227,30 +248,31 @@ function download() {
 // @ts-ignore
 window.download = download;
 
-function drawImage(img: HTMLImageElement, width: number, height: number, offsetX: number, offsetY: number, degree: number): void {
+function drawImage(img: HTMLImageElement, width: number, height: number, offsetX: number, offsetY: number, degree: number, flip: [number, number]): void {
     if (!ctx) return;
 
     ctx.save();
     ctx.translate(width/2 + offsetX + (canvas.width / 2 - width / 2), height/2 - offsetY + (canvas.width / 2 - height / 2));
     ctx.rotate(degree * Math.PI / 360);
+    ctx.scale(flip[0], flip[1]);
     ctx.drawImage(img, -(width/2), -(height/2), width, height);
     ctx.restore();
 }
 
 const memo: {[key: string]: HTMLImageElement} = {};
-function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number, degree: number) {
+function renderImage(imageSrc: string, width: number, height: number, offsetX: number, offsetY: number, degree: number, flip: [number, number] = [1, 1]) {
     return new Promise((resolve, reject) => {
         if (!ctx) {
             reject();
             return;
         }
         if (memo[imageSrc]) {
-            drawImage(memo[imageSrc], width, height, offsetX, offsetY, degree);
+            drawImage(memo[imageSrc], width, height, offsetX, offsetY, degree, flip);
             resolve(memo[imageSrc]);
         } else {
             const img = new Image();
             img.onload = function() {
-                drawImage(img, width, height, offsetX, offsetY, degree);
+                drawImage(img, width, height, offsetX, offsetY, degree, flip);
 
                 memo[imageSrc] = img;
                 resolve(img);
