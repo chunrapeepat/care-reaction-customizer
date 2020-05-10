@@ -6,6 +6,12 @@ body {
     box-sizing: border-box;
 }
 
+.note {
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 7px;
+}
+
 .header {
     text-align: right;
     padding: 15px;
