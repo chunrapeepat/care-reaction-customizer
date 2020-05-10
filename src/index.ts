@@ -35,18 +35,15 @@ const handleMouseDown = (e: MouseEvent) => {
 }
 const handleMouseMove = (e: MouseEvent) => {
     if(isCanvasClicked) {
-        render(ctx,  () => {
-            return new Promise(async (resolve, _) => {
-                if(!(uploadedImage && uploadedWidth && uploadedHeight)) return;
-                const diffX = canvas.width * (e.offsetX - startOffsetX) / canvas.clientWidth
-                const diffY = canvas.height * (-1 * (e.offsetY - startOffsetY)) / canvas.clientHeight
-                offsetX = originalOffsetX + diffX
-                offsetY = originalOffsetY + diffY
-                renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
-                xOffsetEl.value = offsetX.toString()
-                yOffsetEl.value = offsetY.toString()
-                resolve();
-            });
+        render(ctx,  async () => {
+            if(!(uploadedImage && uploadedWidth && uploadedHeight)) return;
+            const diffX = canvas.width * (e.offsetX - startOffsetX) / canvas.clientWidth
+            const diffY = canvas.height * (-1 * (e.offsetY - startOffsetY)) / canvas.clientHeight
+            offsetX = originalOffsetX + diffX
+            offsetY = originalOffsetY + diffY
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            xOffsetEl.value = offsetX.toString()
+            yOffsetEl.value = offsetY.toString()
         });
     }
 }
