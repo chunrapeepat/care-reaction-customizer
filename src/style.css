@@ -45,6 +45,7 @@ canvas {
     height: 400px;
     border: 1px solid #ccc;
     touch-action: none;
+    cursor: grab;
 }
 @media only screen and (max-width: 1100px) {
     .container {
