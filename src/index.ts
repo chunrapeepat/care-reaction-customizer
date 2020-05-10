@@ -61,20 +61,17 @@ const handleTouchStart = (e: TouchEvent) => {
 const handleTouchMove = (e: TouchEvent) => {
     if(isCanvasClicked) {
         e.stopPropagation()
-        render(ctx,  () => {
-            return new Promise(async (resolve, _) => {
-                if(!(uploadedImage && uploadedWidth && uploadedHeight)) return;
-                const eventOffsetX = e.touches[0].pageX - (e.touches[0].target as HTMLCanvasElement).offsetLeft;
-                const eventOffsetY = e.touches[0].pageY - (e.touches[0].target as HTMLCanvasElement).offsetTop;
-                const diffX = canvas.width * (eventOffsetX - startOffsetX) / canvas.clientWidth
-                const diffY = canvas.height * (-1 * (eventOffsetY - startOffsetY)) / canvas.clientHeight
-                offsetX = originalOffsetX + diffX
-                offsetY = originalOffsetY + diffY
-                renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
-                xOffsetEl.value = offsetX.toString()
-                yOffsetEl.value = offsetY.toString()
-                resolve();
-            });
+        render(ctx,  async () => {
+            if(!(uploadedImage && uploadedWidth && uploadedHeight)) return;
+            const eventOffsetX = e.touches[0].pageX - (e.touches[0].target as HTMLCanvasElement).offsetLeft;
+            const eventOffsetY = e.touches[0].pageY - (e.touches[0].target as HTMLCanvasElement).offsetTop;
+            const diffX = canvas.width * (eventOffsetX - startOffsetX) / canvas.clientWidth
+            const diffY = canvas.height * (-1 * (eventOffsetY - startOffsetY)) / canvas.clientHeight
+            offsetX = originalOffsetX + diffX
+            offsetY = originalOffsetY + diffY
+            await renderImage(uploadedImage, uploadedWidth * scale, uploadedHeight * scale, offsetX, offsetY, degree);
+            xOffsetEl.value = offsetX.toString()
+            yOffsetEl.value = offsetY.toString()
         });
     }
 }
