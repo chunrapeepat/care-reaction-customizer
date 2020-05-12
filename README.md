@@ -33,5 +33,5 @@ Feel free to add your profile in contributor list section (index.html).
 
 ---
 
-Make with :heart: by Chun Rapeepat
+Make with :heart: by Chun Rapeepat.
 
