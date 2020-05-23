@@ -218,15 +218,16 @@ handleInput("flip-horizontal-btn", "click", flipImage(0));
 handleInput("flip-vertical-btn",   "click", flipImage(1));
 
 function download() {
+    const trimmedCanvas = trimCanvas(ctx);
     const download = document.getElementById("download");
-    const image = canvas.toDataURL("image/png")
+    const image = trimmedCanvas.toDataURL("image/png")
         .replace("image/png", "image/octet-stream");
     if (!download) return;
     download.setAttribute("href", image);
 
     // store file in firebase storage
     if (uploadedImage) {
-        canvas.toBlob(function(blob){
+        trimmedCanvas.toBlob(function(blob){
             var image = new Image();
             image.src = blob;
 
@@ -275,6 +276,71 @@ function renderImage(imageSrc: string, width: number, height: number, offsetX: n
         }
     });
 };
+
+// MIT http://rem.mit-license.org
+// Source: https://gist.github.com/remy/784508
+function trimCanvas(ctx: CanvasRenderingContext2D) {
+    var copy = document.createElement('canvas').getContext('2d'),
+        pixels = ctx.getImageData(0, 0, canvas.width, canvas.height),
+        l = pixels.data.length,
+        i,
+        bound = {
+            top: null,
+            left: null,
+            right: null,
+            bottom: null
+        },
+        x, y;
+
+        for (i = 0; i < l; i += 4) {
+            if (pixels.data[i+3] !== 0) {
+                x = (i / 4) % canvas.width;
+                y = ~~((i / 4) / canvas.width);
+
+                if (bound.top === null) {
+                    bound.top = y;
+                }
+
+                if (bound.left === null) {
+                    bound.left = x;
+                } else if (x < bound.left) {
+                    bound.left = x;
+                }
+
+                if (bound.right === null) {
+                    bound.right = x;
+                } else if (bound.right < x) {
+                    bound.right = x;
+                }
+
+                if (bound.bottom === null) {
+                    bound.bottom = y;
+                } else if (bound.bottom < y) {
+                    bound.bottom = y;
+                }
+            }
+        }
+
+
+    // Calculate the height and width of the content
+    var trimHeight = bound.bottom - bound.top + 1,
+        trimWidth = bound.right - bound.left + 1,
+        trimmed = ctx.getImageData(bound.left, bound.top, trimWidth, trimHeight);
+
+    console.log("bound.bottom", bound.bottom)
+    console.log("bound.top", bound.top)
+    console.log("bound.left", bound.left)
+    console.log("bound.right", bound.right)
+    console.log("trimWidth", trimWidth)
+    console.log("trimHeight", trimHeight)
+
+    copy.canvas.width = trimWidth;
+    copy.canvas.height = trimHeight;
+    copy.putImageData(trimmed, 0, 0);
+
+    // Return trimmed canvas
+    return copy.canvas;
+}
 
 async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
