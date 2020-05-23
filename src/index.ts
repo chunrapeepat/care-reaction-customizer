@@ -279,7 +279,7 @@ function renderImage(imageSrc: string, width: number, height: number, offsetX: n
 async function render(ctx: CanvasRenderingContext2D, fn: VoidFunction | null) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#fafafa";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.0)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     await renderImage(ReactionBodyPNG, 1024/2, 1024/2, 0, 0, 0);
